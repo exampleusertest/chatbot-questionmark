@@ -5,40 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Chatbot</title>
   <style>
-    /* Basic styling for the chat interface */
     body { font-family: Arial, sans-serif; }
-    #chatbox { width: 100%; max-width: 500px; margin: auto; padding: 10px; }
-    .message { padding: 10px; border-radius: 5px; margin-bottom: 10px; }
-    .user { background-color: #daf8e3; text-align: right; }
-    .bot { background-color: #f0f0f0; text-align: left; }
+    #response { margin-top: 20px; }
   </style>
 </head>
 <body>
-  <div id="chatbox"></div>
-  <input id="user-input" type="text" placeholder="Type your message..." autofocus />
-  <button onclick="sendMessage()">Send</button>
+  <h1>AI Chatbot</h1>
+  <form id="chat-form">
+    <label for="message">Enter your message:</label><br>
+    <input type="text" id="message" required><br><br>
+    <button type="submit">Send</button>
+  </form>
+  <div id="response"></div>
 
   <script>
-    async function sendMessage() {
-      const userInput = document.getElementById('user-input').value;
-      document.getElementById('user-input').value = '';
+    const form = document.getElementById('chat-form');
+    const responseDiv = document.getElementById('response');
 
-      // Display user message
-      const userMessage = document.createElement('div');
-      userMessage.className = 'message user';
-      userMessage.textContent = userInput;
-      document.getElementById('chatbox').appendChild(userMessage);
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const message = document.getElementById('message').value;
+      const apiUrl = 'https://ai-chatbot-serverless-884gj6qg1-william-beltzs-projects.vercel.app/api/chatbot';
 
-      // Call serverless function for AI response
-      const response = await fetch('https://your-project.vercel.app/api/chatbot?message=' + encodeURIComponent(userInput));
-      const data = await response.json();
+      try {
+        const response = await fetch(`${apiUrl}?message=${encodeURIComponent(message)}`);
+        const data = await response.json();
 
-      // Display bot message
-      const botMessage = document.createElement('div');
-      botMessage.className = 'message bot';
-      botMessage.textContent = data.reply;
-      document.getElementById('chatbox').appendChild(botMessage);
-    }
+        if (data.reply) {
+          responseDiv.innerHTML = `<strong>Chatbot:</strong> ${data.reply}`;
+        } else {
+          responseDiv.innerHTML = `<strong>Chatbot:</strong> Sorry, I couldn't understand your request.`;
+        }
+      } catch (error) {
+        responseDiv.innerHTML = `<strong>Error:</strong> Unable to communicate with the server.`;
+      }
+    });
   </script>
 </body>
 </html>
