@@ -3,44 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Chatbot</title>
-  <style>
-    body { font-family: Arial, sans-serif; }
-    #response { margin-top: 20px; }
-  </style>
+  <title>Chatbot Interface</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>AI Chatbot</h1>
-  <form id="chat-form">
-    <label for="message">Enter your message:</label><br>
-    <input type="text" id="message" required><br><br>
-    <button type="submit">Send</button>
-  </form>
-  <div id="response"></div>
-
-  <script>
-    const form = document.getElementById('chat-form');
-    const responseDiv = document.getElementById('response');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      
-      const message = document.getElementById('message').value;
-      const apiUrl = 'https://ai-chatbot-serverless-ftpm27qjk-william-beltzs-projects.vercel.app/api/chatbot';
-
-      try {
-        const response = await fetch(`${apiUrl}?message=${encodeURIComponent(message)}`);
-        const data = await response.json();
-
-        if (data.reply) {
-          responseDiv.innerHTML = `<strong>Chatbot:</strong> ${data.reply}`;
-        } else {
-          responseDiv.innerHTML = `<strong>Chatbot:</strong> Sorry, I couldn't understand your request.`;
-        }
-      } catch (error) {
-        responseDiv.innerHTML = `<strong>Error:</strong> Unable to communicate with the server.`;
-      }
-    });
-  </script>
+  <div id="chat-container">
+    <div id="chat-window"></div>
+    <input type="text" id="user-input" placeholder="Type your message here..." />
+    <button onclick="sendMessage()">Send</button>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
