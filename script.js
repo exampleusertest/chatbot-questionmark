@@ -10,7 +10,7 @@ async function sendMessage() {
 
   try {
     // Send message to backend API
-    const response = await fetch('https://your-backend-url/api/chat', {
+    const response = await fetch('https://private-chatbot-backend.onrender.com/api/chat', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
